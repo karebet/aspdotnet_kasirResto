@@ -1,0 +1,50 @@
+﻿@model kasirResto.Models.Pesanan
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Pesanan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PesananId" />
+            <div class="form-group">
+                <label asp-for="PesananCode" class="control-label"></label>
+                <input asp-for="PesananCode" class="form-control" />
+                <span asp-validation-for="PesananCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PesananDate" class="control-label"></label>
+                <input asp-for="PesananDate" class="form-control" />
+                <span asp-validation-for="PesananDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PesananUserId" class="control-label"></label>
+                <input asp-for="PesananUserId" class="form-control" />
+                <span asp-validation-for="PesananUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PesananStatus" class="control-label"></label>
+                <input asp-for="PesananStatus" class="form-control" />
+                <span asp-validation-for="PesananStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+
+    Pesanan order = ViewData["pesanan"] as Pesanan;
+    var datanama = ViewBag.datanama;
+    var orderdetail = ViewBag.PesananDetail;
+}
+<style>
+    body {
+        color: #FFF !important;
+    }
+</style>
+<div style="width:300px">
+    <div class="row text-dark">
+        <div class="col-12 text-center">
+            <i class="fas fa-utensils fa-3x"></i>
+            <br />
+            Restoran ASP.NET<br />
+            Pejaten, Jakarta Selatan<br />
+                                    <small>by robeth.my.id</small>
+        </div>
+        <div class="col-6">
+            <dl>
+                <dt>ID Pesanan</dt>
+                <dd>@order.PesananCode</dd>
+            </dl>
+        </div>
+        <div class="col-6 text-end">
+            <dl>
+                <dt>Kasir</dt>
+                <dd>@datanama</dd>
+            </dl>
+        </div>
+        <div class="col-12">
+            <hr />
+        </div>
+        @{
+            var totalprice = 0;
+        }
+        @foreach (var item in orderdetail)
+        {
+            totalprice = totalprice + (item.PesananPrice * item.PesananQty);
+            <div class="col-12">
+                <div>
+                    <div class="row">
+                        <div class="col-12">
+                            <span class="">
+                                @( item.MenuNama.Length >=15?item.MenuNama.Substring(0, 15)+ "..": item.MenuNama) (@(item.PesananQty)x)
+                            </span>
+                            <div>
+                                <span class="float-end d-block">Rp @string.Format("{0:#,0}", (item.PesananPrice * item.PesananQty))</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+        @if (orderdetail != null)
+        {
+            var totalpricepajak = totalprice * 0.11;
+            var totalsemua = totalprice + totalpricepajak;
+            <div class="col-md-12 pt-5 mt-5">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="">
+                                Total Harga
+                            </span>
+                            <span class="float-end d-block">Rp @string.Format("{0:#,0}", totalprice)</span>
+                        </div>
+                        <div class="col-md-12">
+                            <span class="">
+                                PPN (11%)
+                            </span>
+                            <span class="float-end d-block">Rp @string.Format("{0:#,0}", totalpricepajak)</span>
+                        </div>
+                        <div class="col-md-12">
+                            <hr />
+                            <span class="">
+                                Total Bayar
+                            </span>
+                            <span class="float-end d-block">Rp @string.Format("{0:#,0}", totalsemua)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

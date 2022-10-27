@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    IEnumerable<Menu> menu = ViewData["Menu"] as IEnumerable<Menu>;
+    IEnumerable<KategoriMenu> kategori = ViewData["KategoriMenu"] as IEnumerable<KategoriMenu>;
+}
+
+<h1 class="h1 text-white">Menu</h1>
+<div class="">
+    <div class="row  g-3 mb-3  align-items-center flex-row flex-nowrap" style="overflow-x: auto;">
+        <div class="col-2">
+            <a class="card card-body bg-grey shadow text-white text-decoration-none rounded-pill" asp-controller="KategoriMenus" asp-action="Create">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <img src="/img/produk/produk-none.jpg" alt="Tambah" class="w-100 rounded-circle" />
+                    </div>
+                    <div class="col-md-9 text-start">
+                        <span class="h4">Tambah</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        @foreach (var item in kategori)
+        {
+            <div class="col-3">
+                <a class="card card-body bg-grey shadow text-white text-decoration-none rounded-pill" asp-controller="KategoriMenus" asp-action="Edit" asp-route-id="@item.KategoriId">
+                    <div class="row  align-items-center">
+                        <div class="col-md-2">
+                            <img src="/@item.KategoriImage" alt="Edit" class="w-100 rounded-circle" />
+                        </div>
+                        <div class="col-md-10 text-start">
+                            <span class="h4">
+                                @item.KategoriNama
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <a class="card card-body bg-grey shadow text-white text-decoration-none" asp-action="Create">
+                    <img src="/img/produk/produk-none.jpg" alt="Tambah" class="w-100 rounded" />
+                    <div class="text-truncate">
+                        <span class="">Tambah Menu Baru</span>
+                    </div>
+                    <div class=" text-end">
+                        <span class="btn btn-danger rounded-circle"><i class="fa fa-plus fa-1x"></i></span>
+                    </div>
+                </a>
+            </div>
+            @foreach (var item in menu)
+            {
+                <div class="col-md-3">
+                    <div class="card card-body shadow bg-grey text-white">
+                        <img src="/@Html.DisplayFor(modelItem => item.MenuImage)" alt="@Html.DisplayFor(modelItem => item.MenuNama)" class="w-100 rounded" />
+                        <div class="text-truncate">
+                            <span class="">@Html.DisplayFor(modelItem => item.MenuNama)</span>
+                        </div>
+                        <div>
+                            <span class="h5 font-weight-bold text-danger">Rp @string.Format("{0:#,0}", item.MenuPrice)</span>
+                            <a asp-action="Edit" asp-route-id="@item.MenuId" class="btn btn-danger rounded-pill float-end"><i class="fa fa-edit fa-1x"></i>Edit</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>
+
+

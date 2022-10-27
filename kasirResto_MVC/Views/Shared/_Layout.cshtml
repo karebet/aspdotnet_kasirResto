@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - kasirResto</title>
+
+    <link rel="stylesheet" href="~/lib/admintemplate/css/sb-admin-2.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/admintemplate/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/kasirFood.styles.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/img/icon-logo.png">
+</head>
+<body class="sidebar-toggled">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <div id="wrapper">
+
+        <ul class="navbar-nav bg-grey sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-area="" asp-controller="Home" asp-action="Index">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <img src="~/img/icon-logo.png" alt="kasirResto" class="w-50" />
+                </div>
+                <div class="sidebar-brand-text mx-3">kasirResto <sup>v1</sup></div>
+            </a>
+
+            <hr class="sidebar-divider my-0">
+
+
+            <partial name="_LoginPartial" />
+
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column  bg-dark">
+            <div id="content">
+                <div class="container-fluid">
+
+                    @RenderBody()
+
+                </div>
+
+            </div>
+
+            <footer class="sticky-footer">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <a href="https://robeth.my.id" class="text-white">Create with ASP.NET Core 6 ~ Robeth Muzaki 2022</a>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+
+    </div>
+
+    <script src="~/lib/admintemplate/js/sb-admin-2.min.js"></script>
+    <script src="~/lib/admintemplate/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

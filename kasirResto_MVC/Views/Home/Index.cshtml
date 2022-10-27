@@ -1,0 +1,232 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    IEnumerable<Menu> menu = ViewData["Menu"] as IEnumerable<Menu>;
+    IEnumerable<KategoriMenu> kategori = ViewData["KategoriMenu"] as IEnumerable<KategoriMenu>;
+    //List<string> orderdetail = ViewData["PesananDetail"] as List<string>;
+    Pesanan order = ViewData["pesanan"] as Pesanan;
+    var datanama = ViewBag.datanama;
+    var orderdetail = ViewBag.PesananDetail;
+
+}
+
+
+
+<div class="row">
+    <div class="col-md-8">
+        <h1 class="h1 text-white">Buat Order</h1>
+        <div>
+            <div class="row g-3 mb-3 align-items-center flex-row flex-nowrap">
+                @foreach (var item in kategori)
+                {
+                    <div class="col-3">
+                        <a class="card card-body bg-grey shadow text-white text-decoration-none rounded-pill" asp-route-kategoriid="@item.KategoriId">
+                            <div class="row  align-items-center">
+                                <div class="col-md-3">
+                                    <img src="/@item.KategoriImage" alt="Edit" class="w-100 rounded-circle" />
+                                </div>
+                                <div class="col-md-9 text-start">
+                                    <span class="h4">
+                                        @item.KategoriNama
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row g-3">
+                    @if (menu.Any())
+                    {
+                        @foreach (var item in menu)
+                        {
+                            <form class="col-md-3 text-decoration-none" asp-action="InsertDetailPesanan" method="post">
+                                <div class="card card-body shadow bg-grey text-white">
+                                    <img src="/@Html.DisplayFor(modelItem => item.MenuImage)" alt="@Html.DisplayFor(modelItem => item.MenuNama)" class="w-100 rounded" />
+                                    <div class="text-truncate">
+                                        <span class="">@Html.DisplayFor(modelItem => item.MenuNama)</span>
+                                    </div>
+                                    <div class="d-none">
+                                        <input type="number" name="PesananMenuID" value="@item.MenuId" />
+                                        <input type="number" name="PesananDPID" value="@order.PesananId" />
+                                        <input type="number" name="PesananPrice" value="@item.MenuPrice" />
+                                        <input type="number" name="PesananStatus" value="@(1.ToString())" />
+                                        <input type="number" name="PesananQty" value="1" />
+                                    </div>
+                                    <div>
+                                        <span class="h5 font-weight-bold text-danger">Rp @string.Format("{0:#,0}", item.MenuPrice)</span>
+                                        <button type="submit" class="btn btn-danger rounded-pill float-end"><i class="fa fa-plus fa-1x"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+
+
+
+                    }
+                    else
+                    {
+                        <div class="col-12 text-center text-white py-3">
+                            <i class="fa fa-list-alt fa-10x"></i>
+                            <p class="lead">
+                                Menu belum tersedia di kategori ini
+                            </p>
+                        </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-4 bg-grey shadow" style="min-height:50vh">
+        <span class="h1">Order</span>
+        <div class="row">
+            <div class="col-6">
+                <dl>
+                    <dt>ID Pesanan</dt>
+                    <dd>@order.PesananCode</dd>
+                </dl>
+            </div>
+            <div class="col-6 text-end">
+                <dl>
+                    <dt>Kasir</dt>
+                    <dd>@datanama</dd>
+                </dl>
+            </div>
+            @*@if (orderdetail.Any()){ }*@
+            @{
+                var totalprice = 0;
+            }
+            @foreach (var item in orderdetail)
+            {
+                totalprice = totalprice + (item.PesananPrice * item.PesananQty);
+                <div class="col-12">
+                    <a href="#" class="card card-body bg-dark mb-2 text-decoration-none text-white" data-bs-toggle="modal" data-bs-target="#modaleditdetailorder-@item.PesananDid">
+                        <div class="row">
+                            <div class="col-2">
+                                <img src="/@item.MenuImage" class="img-fluid rounded" />
+                            </div>
+                            <div class="col-10">
+                                <span class="lead">
+                                    @( item.MenuNama.Length >=15?item.MenuNama.Substring(0, 15)+ "..": item.MenuNama) (@(item.PesananQty)x)
+                                </span>
+                                <div>
+                                    <span class="float-end font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", (item.PesananPrice * item.PesananQty))</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                    <div class="modal fade" id="modaleditdetailorder-@item.PesananDid">
+                        <div class="modal-dialog">
+                            <div class="modal-content bg-dark">
+                                <div class="modal-header border-0">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">@item.MenuNama</h1>
+                                    <a asp-route-id="@item.PesananDid" asp-action="DeleteDetailPesanan" type="button" class="btn btn-danger">Hapus</a>
+                                </div>
+                                <form class="modal-body" class="col-md-3 text-decoration-none" asp-action="UpdateDetailPesanan" method="post">
+                                    <span class="h2 font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", item.PesananPrice)</span>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-group input-group-lg mb-3">
+                                                <button type="button" class="input-group-text bg-danger text-white border-0 onupdateqty" data-target-for="min" data-target-id="#qtyupdatedatapesanan-@item.PesananDid">-</button>
+                                                <input type="number" class="form-control text-white text-center bg-transparent border-0" id="qtyupdatedatapesanan-@item.PesananDid" required min="1" name="PesananQty" value="@item.PesananQty" />
+                                                <button type="button" class="input-group-text bg-danger text-white border-0 onupdateqty" data-target-for="plus" data-target-id="#qtyupdatedatapesanan-@item.PesananDid">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-4 text-end">
+                                            <div class="d-none">
+                                                <input type="number" name="PesananDID" value="@item.PesananDid" />
+                                            </div>
+                                            <button type="submit" class="btn btn-danger">Simpan</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+
+            @if (orderdetail.Count!=0)
+            {
+                var totalpricepajak = totalprice * 0.11;
+                var totalsemua = totalprice + totalpricepajak;
+                <div class="col-md-12 pt-5 mt-5">
+                    <div class="card card-body bg-dark mb-2 text-decoration-none text-white">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="lead">
+                                    Total Harga
+                                </span>
+                                <span class="float-end font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", totalprice)</span>
+                            </div>
+                            <div class="col-md-12">
+                                <span class="lead">
+                                    PPN (11%)
+                                </span>
+                                <span class="float-end font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", totalpricepajak)</span>
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                                <span class="lead">
+                                    Total Bayar
+                                </span>
+                                <span class="float-end font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", totalsemua)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 my-5">
+                    <a asp-action="PrintOrderPDF" asp-controller="Home" asp-route-idorder="@order.PesananId"  class="btn btn-danger btn-block btn-lg open_print">
+                        <i class="fa fa-receipt"></i>
+                        Cetak Struk
+                    </a>
+                </div>
+            }
+            else
+            {
+                <hr />
+                <p class="lead">Pesanan Kosong!, <br />klik <span class="btn btn-danger rounded-pill"><i class="fa fa-plus fa-1x"></i></span> untuk menambah pesanan</p>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $(document).on("click", ".open_print", function (e) {
+            setTimeout(function () {
+                location.reload();
+            }, 5000);
+        });
+
+        $(document).on("click", ".onupdateqty", function (e) {
+            var forplusminus = $(this).attr("data-target-for");
+            var idtarget = $(this).attr("data-target-id");
+            var valuesekarang = $(idtarget).val();
+            var newvalue = 1;
+            if (forplusminus == "plus") {
+                newvalue = parseInt(valuesekarang) + 1;
+
+            } else {
+                newvalue = parseInt(valuesekarang) - 1;
+            }
+            if (newvalue < 1) {
+                newvalue = 1;
+            }
+            $(idtarget).val(newvalue);
+        });
+    });
+</script>

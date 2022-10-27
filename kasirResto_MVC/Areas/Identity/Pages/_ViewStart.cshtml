@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using kasirResto.Areas.Identity.Data
+
+@inject SignInManager<kasirRestoUser> SignInManager
+@inject UserManager<kasirRestoUser> UserManager
+
+
+@{
+    @if (SignInManager.IsSignedIn(User))
+    {
+        Layout = "/Views/Shared/_Layout.cshtml";
+    }
+    else{
+        Layout = "/Views/Shared/_PublicLayout.cshtml";
+    }
+}
+
+<style>
+    body {
+        background-color: #000;
+        color: #FFF;
+    }
+
+    .card {
+        background-color: #191A19;
+        color: #FFF;
+    }
+
+    a {
+        color: #FFF;
+    }
+
+    .form-floating label {
+        color: #191A19;
+    }
+
+    .form-floating {
+        margin-bottom: 1rem;
+    }
+</style>

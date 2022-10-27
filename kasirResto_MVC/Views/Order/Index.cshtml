@@ -1,0 +1,25 @@
+﻿@model IEnumerable<kasirResto.Models.Pesanan>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Order Masuk</h1>
+
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col-md-8">
+            <a class="card card-body bg-grey mb-2 text-decoration-none"  asp-action="Details" asp-route-id="@item.PesananId">
+                <div class="row">
+                    <div class="col-md-12">
+                        <b>IDOrder</b>
+                        @Html.DisplayFor(modelItem => item.PesananCode)
+                        <span class="float-end font-italic">@Html.DisplayFor(modelItem => item.PesananDate)</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+}
+

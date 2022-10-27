@@ -1,0 +1,51 @@
+﻿@model kasirResto.Models.Menu
+@{
+    ViewData["Title"] = "Create";
+    var k = ViewBag.kategori;
+}
+
+<h1 class="text-white h1">Tambah Menu</h1>
+
+<div class="row text-white">
+    <div class="col-md-4">
+        <form asp-action="Create" asp-controller="Menu" method="post" enctype="multipart/form-data" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MenuNama" class="control-label">Nama Menu</label>
+                <input asp-for="MenuNama" class="form-control" />
+                <span asp-validation-for="MenuNama" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuImage" class="control-label">Gambar</label>
+                <input asp-for="MenuImage" class="form-control" type="file"/>
+                <span asp-validation-for="MenuImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuKategoriId" class="control-label">Kategori</label>
+                <select asp-for="MenuKategoriId" class="form-control">
+                    @foreach (var i in k) { 
+                        <option value="@i.KategoriId">@i.KategoriNama</option>
+                    }
+                </select>
+                <span asp-validation-for="MenuKategoriId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuPrice" class="control-label">Harga</label>
+                <input asp-for="MenuPrice" class="form-control" />
+                <span asp-validation-for="MenuPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group d-none">
+                <label asp-for="MenuStatus" class="control-label"></label>
+                <input asp-for="MenuStatus" class="form-control" value="1" />
+                <span asp-validation-for="MenuStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-danger btn-block" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

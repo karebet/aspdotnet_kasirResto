@@ -1,0 +1,98 @@
+﻿@model kasirResto.Models.Pesanan
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Pesanan order = ViewData["pesanan"] as Pesanan;
+    kasirResto.Areas.Identity.Data.kasirRestoUser kasiruser = ViewData["kasiruser"] as kasirResto.Areas.Identity.Data.kasirRestoUser;
+
+    var datanama = kasiruser.UserName;
+    var orderdetail = ViewBag.PesananDetail;
+}
+
+
+<div class="row">
+    <div class="col-md-4">
+        <span class="h1">Order</span>
+        <div class="row">
+            <div class="col-6">
+                <dl>
+                    <dt>ID Pesanan</dt>
+                    <dd>@order.PesananCode</dd>
+                </dl>
+            </div>
+            <div class="col-6 text-end">
+                <dl>
+                    <dt>Kasir</dt>
+                    <dd>@datanama</dd>
+                </dl>
+            </div>
+            <div class="col-12">
+                <div class="card card-body bg-grey">
+                    <div class="row">
+                        @{
+                            var totalprice = 0;
+                        }
+                        @foreach (var item in orderdetail)
+                        {
+                            totalprice = totalprice + (item.PesananPrice * item.PesananQty);
+                            <div class="col-12">
+                                <div class="mb-2 text-decoration-none text-white" data-bs-toggle="modal" data-bs-target="#modaleditdetailorder-@item.PesananDid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <span class="">
+                                                @( item.MenuNama.Length >=15?item.MenuNama.Substring(0, 15)+ "..": item.MenuNama) (@(item.PesananQty)x)
+                                            </span>
+                                            <div>
+                                                <span class="float-end font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", (item.PesananPrice * item.PesananQty))</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                
+            </div>
+
+            @{
+                var totalpricepajak = totalprice * 0.11;
+                var totalsemua = totalprice + totalpricepajak;
+                <div class="col-md-12 pt-5 mt-5">
+                    <div class="card card-body bg-grey mb-2 text-decoration-none text-white">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="lead">
+                                    Total Harga
+                                </span>
+                                <span class="float-end font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", totalprice)</span>
+                            </div>
+                            <div class="col-md-12">
+                                <span class="lead">
+                                    PPN (11%)
+                                </span>
+                                <span class="float-end font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", totalpricepajak)</span>
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                                <span class="lead">
+                                    Total Bayar
+                                </span>
+                                <span class="float-end font-weight-bold text-danger d-block">Rp @string.Format("{0:#,0}", totalsemua)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 my-5">
+                    <a asp-action="PrintOrderPDF" asp-controller="Home" asp-route-idorder="@order.PesananId" class="btn btn-danger btn-block btn-lg">
+                        <i class="fa fa-receipt"></i>
+                        Cetak Struk
+                    </a>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
